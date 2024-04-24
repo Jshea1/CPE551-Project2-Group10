@@ -9,7 +9,7 @@
 
 
 ### John Shea
-
+- RecommenderGUI.py
 
 ### Saurabh Parkar
 - Media.py 
