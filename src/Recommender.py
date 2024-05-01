@@ -100,20 +100,20 @@ class Recommender:
 
     def getBookList(self):
         # max len for formatting
-        max_title_length = 0
-        max_authors_length = 0
+        maxTitleLength = 0
+        maxAuthorsLength = 0
         for book in self.__books.values():
-            if len(book.title) > max_title_length:
-                max_title_length = len(book.title)
-            if len(book.authors) > max_authors_length:
-                max_authors_length = len(book.authors)
+            if len(book.title) > maxTitleLength:
+                maxTitleLength = len(book.title)
+            if len(book.authors) > maxAuthorsLength:
+                maxAuthorsLength = len(book.authors)
 
         # printing headers
-        print(f"{'Title':<{max_title_length}} | {'Authors':<{max_authors_length}}")
+        print(f"{'Title':<{maxTitleLength}} | {'Authors':<{maxAuthorsLength}}")
 
         # printing values in format
         for book in self.__books.values():
-            print(f"{book.title:<{max_title_length}} | {book.authors:<{max_authors_length}}")
+            print(f"{book.title:<{maxTitleLength}} | {book.authors:<{maxAuthorsLength}}")
 
 
     def getMovieStats(self):
