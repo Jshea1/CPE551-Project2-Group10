@@ -5,73 +5,73 @@ from Media import Media
 class Show(Media):
     def __init__(self, id, title, averageRating, showType, directors, actors, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
         super().__init__(id, title, averageRating)
-        self.showType = showType
-        self.directors = directors
-        self.actors = actors
-        self.countryCode = countryCode
-        self.dateAdded = dateAdded
-        self.releaseYear = releaseYear
-        self.rating = rating
-        self.duration = duration
-        self.genres = genres
-        self.description = description
+        self.__showType = showType
+        self.__directors = directors
+        self.__actors = actors
+        self.__countryCode = countryCode
+        self.__dateAdded = dateAdded
+        self.__releaseYear = releaseYear
+        self.__rating = rating
+        self.__duration = duration
+        self.__genres = genres
+        self.__description = description
 
-    def showType(self):
+    def getShowType(self):
         return self.__showType
 
-    def showType(self, newShowType):
+    def setShowType(self, newShowType):
         self.__showType = newShowType
 
-    def directors(self):
+    def getDirectors(self):
         return self.__directors
 
-    def directors(self, newDirectors):
+    def setDirectors(self, newDirectors):
         self.__directors = newDirectors
 
-    def actors(self):
+    def getActors(self):
         return self.__actors
 
-    def actors(self, newActors):
+    def setActors(self, newActors):
         self.__actors = newActors
 
-    def countryCode(self):
+    def getCountryCode(self):
         return self.__countryCode
 
-    def countryCode(self, newCountryCode):
+    def setCountryCode(self, newCountryCode):
         self.__countryCode = newCountryCode
 
-    def dateAdded(self):
+    def getDateAdded(self):
         return self.__dateAdded
 
-    def dateAdded(self, newDateAdded):
+    def setDateAdded(self, newDateAdded):
         self.__dateAdded = newDateAdded
 
-    def releaseYear(self):
+    def getReleaseYear(self):
         return self.__releaseYear
 
-    def releaseYear(self, newReleaseYear):
+    def setReleaseYear(self, newReleaseYear):
         self.__releaseYear = newReleaseYear
 
-    def rating(self):
+    def getRating(self):
         return self.__rating
 
-    def rating(self, newRating):
+    def setRating(self, newRating):
         self.__rating = newRating
 
-    def duration(self):
+    def getDuration(self):
         return self.__duration
 
-    def duration(self, newDuration):
+    def setDuration(self, newDuration):
         self.__duration = newDuration
 
-    def genres(self):
+    def getGenres(self):
         return self.__genres
 
-    def genres(self, newGenres):
+    def setGenres(self, newGenres):
         self.__genres = newGenres
 
-    def description(self):
+    def getDescription(self):
         return self.__description
 
-    def description(self, newDescription):
+    def setDescription(self, newDescription):
         self.__description = newDescription

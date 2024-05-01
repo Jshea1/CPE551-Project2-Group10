@@ -27,8 +27,6 @@ class Recommender:
             else:
                 messagebox.showerror('Error', 'No File Selected')
 
-        # for entry in fileName:
-        #     pass
 
     def loadShows(self):
         '''Loads Shows into Dictionary from csv file'''
@@ -54,8 +52,9 @@ class Recommender:
         movies = {}
         #filtering only movies
         for id, info in self.__shows.items():
-            if info['type'] == 'Movie':
+            if info.getType() == 'Movie':  
                 movies[id] = info
+
 
         # max len for formatting
         maxTitleLength = 0
@@ -77,7 +76,7 @@ class Recommender:
         # filtering only shows
         TVShows = {}
         for id, info in self.__shows.items():
-            if info['type'] == 'TV Show':
+            if info.getType() == 'TV Show':
                 TVShows[id] = info
 
         # max len for formatt
@@ -116,9 +115,72 @@ class Recommender:
             print(f"{book.title:<{maxTitleLength}} | {book.authors:<{maxAuthorsLength}}")
 
 
+    def getBookList(self):
+        # Max length for formatting
+        maxTitleLength = 0
+        maxAuthorsLength = 0
+        for book in self.__books.values():
+            if len(book.title) > maxTitleLength:
+                maxTitleLength = len(book.title)
+            if len(book.authors) > maxAuthorsLength:
+                maxAuthorsLength = len(book.authors)
+
+        # Printing headers
+        print(f"{'Title':<{maxTitleLength}} | {'Authors':<{maxAuthorsLength}}")
+
+        # Printing values in format
+        for book in self.__books.values():
+            print(f"{book.title:<{maxTitleLength}} | {book.authors:<{maxAuthorsLength}}")
+
     def getMovieStats(self):
-        # Implement getting statistics for movies
-        pass
+        movies = {}
+        for id, info in self.__shows.items():
+            if info.getShowType() == 'Movie':
+                movies[id] = info
+
+        ratings = {}
+        totalDuration = 0
+        directors = {}
+        actors = {}
+        genres = {}
+
+        for movie in movies.values():
+            # counting ratings
+            rating = movie.getRating()
+            ratings[rating] = ratings.get(rating, 0) + 1
+            
+            # duration total
+            duration = int(movie.getDuration())
+            totalDuration += duration
+            
+            # director total
+            director = movie.getDirectors()
+            directors[director] = directors.get(director, 0) + 1
+            
+            # cast total
+        for actor in movie.getCast().split(', '):
+            actors[actor] = actors.get(actor, 0) + 1
+            
+            # genre total
+            for genre in movie.getGenres().split(', '):
+                genres[genre] = genres.get(genre, 0) + 1
+
+        # stat calcs
+        totalMovies = len(movies)
+        ratingPercentages = {r: f"{(count / totalMovies * 100):.2f}%" for r, count in ratings.items()}
+        averageDuration = f"{totalDuration / totalMovies:.2f}"
+        mostCommonDirector = max(directors, key=directors.get)
+        mostCommonActor = max(actors, key=actor.get)
+        mostCommonGenre = max(genres, key=genres.get)
+
+        # printing stats
+        print(f"Rating Percentages: {ratingPercentages}")
+        print(f"Average Movie Duration: {averageDuration} minutes")
+        print(f"Most Common Director: {mostCommonDirector}")
+        print(f"Most Common Actor: {mostCommonActor}")
+        print(f"Most Common Genre: {mostCommonGenre}")
+
+
 
     def getTVStats(self):
         # Implement getting statistics for TV shows
@@ -128,7 +190,7 @@ class Recommender:
         # Implement getting statistics for books
         pass
 
-    def searchTVMovies(self, title, director, actor, genre):
+    def searchTVMovies(self, title, director, cast, genre):
         # Implement searching for TV shows and movies
         pass
 
