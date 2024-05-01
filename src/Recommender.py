@@ -15,7 +15,7 @@ class Recommender:
         while True:
             file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
             if file:
-                if os.path.exist(file):
+                if os.path.exists(file):
                     with open(file) as bookfile:                    # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
                         for line in bookfile:
                             _line = line.strip().split(',')
@@ -35,7 +35,7 @@ class Recommender:
         while True:
             file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
             if file:
-                if os.path.exist(file):                # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
+                if os.path.exists(file):                # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
                     with open(file) as showfile:
                         for line in showfile:
                             _line = line.strip().split(',')
@@ -51,16 +51,70 @@ class Recommender:
         pass
 
     def getMovieList(self):
-        # Implement getting list of movies
-        pass
+        movies = {}
+        #filtering only movies
+        for id, info in self.__shows.items():
+            if info['type'] == 'Movie':
+                movies[id] = info
+
+        # max len for formatting
+        maxTitleLength = 0
+        maxDurationLength = 0
+        for movie in movies.values():
+            if len(movie['title']) > maxTitleLength:
+                maxTitleLength = len(movie['title'])
+            if len(movie['duration']) > maxDurationLength:
+                maxDurationLength = len(movie['duration'])
+
+        # printing header
+        print(f"{'Title':<{maxTitleLength}} | {'Duration':>{maxDurationLength}}")
+
+        # printing vals in format
+        for movie in movies.values():
+            print(f"{movie['title']:<{maxTitleLength}} | {movie['duration']:>{maxDurationLength}}")
 
     def getTVList(self):
-        # Implement getting list of TV shows
-        pass
+        # filtering only shows
+        TVShows = {}
+        for id, info in self.__shows.items():
+            if info['type'] == 'TV Show':
+                TVShows[id] = info
+
+        # max len for formatt
+        maxTitleLength = 0
+        maxSeasonsLength = 0
+        for TVShows in TVShows.values():
+            if len(TVShows['title']) > maxTitleLength:
+                maxTitleLength = len(TVShows['title'])
+            seasonsLength = len(TVShows['duration'])  
+            if seasonsLength > maxSeasonsLength:
+                maxSeasonsLength = seasonsLength
+
+        # printing headers
+        print(f"{'Title':<{maxTitleLength}} | {'Seasons':>{maxSeasonsLength}}")
+
+        # prtinin vals in format
+        for TVShows in TVShows.values():
+            print(f"{TVShows['title']:<{maxTitleLength}} | {TVShows['duration']:>{maxSeasonsLength}}")
+
 
     def getBookList(self):
-        # Implement getting list of books
-        pass
+        # max len for formatting
+        max_title_length = 0
+        max_authors_length = 0
+        for book in self.__books.values():
+            if len(book.title) > max_title_length:
+                max_title_length = len(book.title)
+            if len(book.authors) > max_authors_length:
+                max_authors_length = len(book.authors)
+
+        # printing headers
+        print(f"{'Title':<{max_title_length}} | {'Authors':<{max_authors_length}}")
+
+        # printing values in format
+        for book in self.__books.values():
+            print(f"{book.title:<{max_title_length}} | {book.authors:<{max_authors_length}}")
+
 
     def getMovieStats(self):
         # Implement getting statistics for movies
