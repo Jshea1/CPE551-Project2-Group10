@@ -14,9 +14,9 @@ class Media:
             title of media
         rating: float 
         '''
-        self._id = id
-        self._title = title
-        self._rating = rating
+        self.__id = id
+        self.__title = title
+        self.__rating = rating
         
     # Accessor Functions
     
@@ -36,7 +36,7 @@ class Media:
         self.__id=ID
     
         
-    def setTitile(self,title):
+    def setTitle(self,title):
         self.__title=title
     
     def setRating(self, rating):

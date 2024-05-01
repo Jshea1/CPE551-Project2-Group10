@@ -1,6 +1,7 @@
 import os
 from tkinter import filedialog, messagebox
 from Book import Books
+from Shows import Show
 
 class Recommender:
     def __init__(self):
@@ -15,7 +16,7 @@ class Recommender:
             file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exist(file):
-                    with open(file) as bookfile:
+                    with open(file) as bookfile:                    # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
                         for line in bookfile:
                             _line = line.strip().split(',')
                             
@@ -30,8 +31,20 @@ class Recommender:
         #     pass
 
     def loadShows(self):
-        # Implement loading shows from file
-        pass
+        '''Loads Shows into Dictionary from csv file'''
+        while True:
+            file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
+            if file:
+                if os.path.exist(file):                # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
+                    with open(file) as showfile:
+                        for line in showfile:
+                            _line = line.strip().split(',')
+                            self.__shows[f'{_line[0]}'] = Show(*_line)
+                    break
+
+            else:
+                messagebox.showerror('Error', 'No File Selected')
+        #pass
 
     def loadAssociations(self):
         # Implement loading associations from file

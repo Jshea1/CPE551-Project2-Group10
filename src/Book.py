@@ -16,35 +16,35 @@ class Books(Media):
     def author(self):
         return self.__author
 
-    def author(self, value):
-        self.__author = value
+    def author(self, newAuthor):
+        self.__author = newAuthor
 
     def isbn(self):
         return self.__isbn
 
-    def isbn(self, value):
-        self.__isbn = value
+    def isbn(self, newIsbn):
+        self.__isbn = newIsbn
 
     def isbn13(self):
         return self.__isbn13
 
-    def isbn13(self, value):
-        self.__isbn13 = value
+    def isbn13(self, newIsbn13):
+        self.__isbn13 = newIsbn13
 
     def numOfRatings(self):
         return self.__numOfRatings
 
-    def numOfRatings(self, value):
-        self.__numOfRatings = value
+    def numOfRatings(self, newNumOfRatings):
+        self.__numOfRatings = newNumOfRatings
 
     def pubDate(self):
         return self.__pubDate
 
-    def pubDate(self, value):
-        self.__pubDate = value
+    def pubDate(self, newPubDate):
+        self.__pubDate = newPubDate
 
     def publisher(self):
         return self.__publisher
     
-    def publisher(self, value):
-        self.__publisher = value
+    def publisher(self, newPublisher):
+        self.__publisher = newPublisher
