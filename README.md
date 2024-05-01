@@ -6,6 +6,7 @@
 
 ### Yash Patel  
 - Recommender.py
+- Shows.py
 
 
 ### John Shea
