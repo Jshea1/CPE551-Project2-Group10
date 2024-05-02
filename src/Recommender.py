@@ -46,7 +46,36 @@ class Recommender:
 
     def loadAssociations(self):
         # Implement loading associations from file
-        pass
+        # creating new member variable dicts to store associations
+        self.showassociations = {}
+        self.bookassociation = {}
+        while True:
+            # Opens associated file and stores association in a dict in {id:[list]} format
+            # with id(key) being showid or bookid as per the requirement and 
+            # list(values) being associated books/shows
+            file = filedialog.askopenfile(initialdir=os.getcwd(), title='Loads Associations File',filetypes=[("CSV files", "*.csv")])
+            if file:
+                if os.path.exists(file):
+                    with open(file) as associationfile:
+                        for line in associationfile:
+                            _line = line.strip().split(',')
+                            # Show -> Books association
+                            if _line[0] not in self.showassociations:
+                                self.showassociations[_line[0]]=[]
+                                self.showassociations[_line[0]].append(_line[1])
+                            else:
+                                self.showassociations[_line[0]].append(_line[1])
+                            # Books -> show associations
+                            if _line[1] not in self.bookassociation:
+                                self.showassociations[_line[1]]=[]
+                                self.showassociations[_line[1]].append(_line[0])
+                            else:
+                                self.showassociations[_line[1]].append(_line[0])
+                    break
+            else:
+                messagebox.showerror('Error','No File Selected')
+                            
+                                
 
     def getMovieList(self):
         movies = {}
@@ -238,6 +267,7 @@ class Recommender:
 
     def searchTVMovies(self, title, director, cast, genre):
         # Implement searching for TV shows and movies
+        
         pass
 
     def searchBooks(self, title, author, publisher):
