@@ -1,5 +1,12 @@
+# Author:
+# Date: 5-5-2024
+# Description:
+# I pledge my honor that I have abided by the Stevens Honor System
+
+
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
 
 
 class Recommender:
@@ -17,7 +24,7 @@ class Recommender:
         self._books = [("Example Book", "Author A"), ("Example Book", "Author B")]
         self._movieStats = "no stats"
         self._tvStats = "no stats"
-        self._bookStats = "Total Books: 2"
+        self._bookStats = ""
 
     def getMovies(self):
         if not self._movies:
@@ -52,11 +59,11 @@ class RecommenderGUI:
     def __init__(self):
         self._recommender = Recommender()
 
-        self._root = tk.Tk()
-        self._root.title("Movie Recommender")
-        self._root.geometry("1200x800")
+        self._rootWindow = tk.Tk()
+        self._rootWindow.title("Movie Recommender")
+        self._rootWindow.geometry("1200x800")
 
-        self._notebook = ttk.Notebook(self._root)
+        self._notebook = ttk.Notebook(self._rootWindow)
         self._notebook.pack(expand=True, fill="both")
 
         self._notebook_tab = ttk.Frame(self._notebook)
@@ -89,7 +96,16 @@ class RecommenderGUI:
         self._booksScrollbar.pack(side='right', fill='y')
         self._bookText.config(yscrollcommand=self._booksScrollbar.set)
 
-        self._buttonFrame = tk.Frame(self._root)
+        self._tv_shows_tab = ttk.Frame(self._notebook)
+        self._notebook.add(self._tv_shows_tab, text="Search Movies/TV")
+
+        self._tv_shows_tab = ttk.Frame(self._notebook)
+        self._notebook.add(self._tv_shows_tab, text="Search Books")
+
+        self._tv_shows_tab = ttk.Frame(self._notebook)
+        self._notebook.add(self._tv_shows_tab, text="Recommendations")
+
+        self._buttonFrame = tk.Frame(self._rootWindow)
         self._buttonFrame.pack(side='bottom', fill='x', padx=10, pady=10)
 
         self._buttons = []
@@ -106,11 +122,11 @@ class RecommenderGUI:
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
-        button = tk.Button(self._buttonFrame, text=f"Information")
+        button = tk.Button(self._buttonFrame, text=f"Information", command=self.creditInfoBox)
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
-        button = tk.Button(self._buttonFrame, text=f"Quit")
+        button = tk.Button(self._buttonFrame, text=f"Quit", command=self._rootWindow.destroy)
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
@@ -118,6 +134,10 @@ class RecommenderGUI:
         self.updateMovies()
         self.updateTVshows()
         self.updateBooks()
+
+    def creditInfoBox(self):
+        messagebox.showinfo("Information", "Saurabh Raman Parkar     Yash Patel     John Shea\n"
+                                           "Project completed on May-05-2024")
 
     def updateMovies(self):
         data = self._recommender.getMovies()
@@ -141,10 +161,10 @@ class RecommenderGUI:
         self._bookText.config(state='disabled')
 
     @property
-    def root(self):
-        return self._root
+    def rootWindow(self):
+        return self._rootWindow
 
 
 if __name__ == "__main__":
     gui = RecommenderGUI()
-    gui.root.mainloop()
+    gui.rootWindow.mainloop()
