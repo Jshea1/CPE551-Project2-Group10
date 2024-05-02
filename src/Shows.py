@@ -3,11 +3,11 @@
 from Media import Media
 
 class Show(Media):
-    def __init__(self, id, title, averageRating, showType, directors, actors, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
+    def __init__(self, id, title, averageRating, showType, directors, cast, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
         super().__init__(id, title, averageRating)
         self.__showType = showType
         self.__directors = directors
-        self.__actors = actors
+        self.__cast = cast
         self.__countryCode = countryCode
         self.__dateAdded = dateAdded
         self.__releaseYear = releaseYear
@@ -28,11 +28,11 @@ class Show(Media):
     def setDirectors(self, newDirectors):
         self.__directors = newDirectors
 
-    def getActors(self):
-        return self.__actors
+    def getCast(self):
+        return self.__cast
 
-    def setActors(self, newActors):
-        self.__actors = newActors
+    def setCast(self, newCast):
+        self.__cast = newCast
 
     def getCountryCode(self):
         return self.__countryCode

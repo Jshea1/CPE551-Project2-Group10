@@ -115,23 +115,6 @@ class Recommender:
             print(f"{book.title:<{maxTitleLength}} | {book.authors:<{maxAuthorsLength}}")
 
 
-    def getBookList(self):
-        # Max length for formatting
-        maxTitleLength = 0
-        maxAuthorsLength = 0
-        for book in self.__books.values():
-            if len(book.title) > maxTitleLength:
-                maxTitleLength = len(book.title)
-            if len(book.authors) > maxAuthorsLength:
-                maxAuthorsLength = len(book.authors)
-
-        # Printing headers
-        print(f"{'Title':<{maxTitleLength}} | {'Authors':<{maxAuthorsLength}}")
-
-        # Printing values in format
-        for book in self.__books.values():
-            print(f"{book.title:<{maxTitleLength}} | {book.authors:<{maxAuthorsLength}}")
-
     def getMovieStats(self):
         movies = {}
         for id, info in self.__shows.items():
@@ -158,9 +141,9 @@ class Recommender:
             directors[director] = directors.get(director, 0) + 1
             
             # cast total
-        for actor in movie.getCast().split(', '):
-            actors[actor] = actors.get(actor, 0) + 1
-            
+            for actor in movie.getCast().split(', '):
+                actors[actor] = actors.get(actor, 0) + 1
+
             # genre total
             for genre in movie.getGenres().split(', '):
                 genres[genre] = genres.get(genre, 0) + 1
@@ -170,10 +153,10 @@ class Recommender:
         ratingPercentages = {r: f"{(count / totalMovies * 100):.2f}%" for r, count in ratings.items()}
         averageDuration = f"{totalDuration / totalMovies:.2f}"
         mostCommonDirector = max(directors, key=directors.get)
-        mostCommonActor = max(actors, key=actor.get)
+        mostCommonActor = max(actors, key=actors.get)
         mostCommonGenre = max(genres, key=genres.get)
 
-        # printing stats
+        # printing stats -----------------------------------------------!!! ARE WE PRINTING OR MAKING A BIG RETURN STATEMENT? !!!
         print(f"Rating Percentages: {ratingPercentages}")
         print(f"Average Movie Duration: {averageDuration} minutes")
         print(f"Most Common Director: {mostCommonDirector}")
@@ -183,12 +166,75 @@ class Recommender:
 
 
     def getTVStats(self):
-        # Implement getting statistics for TV shows
-        pass
+        # Filter TV shows from the list
+        tv_shows = {id: info for id, info in self.__shows.items() if info.getShowType() == 'TV Show'}
+
+        ratings = {}
+        totalSeasons = 0
+        cast = {}
+        genres = {}
+
+        for show in tv_shows.values():
+            # total ratings
+            rating = show.getRating()
+            ratings[rating] = ratings.get(rating, 0) + 1
+            
+            # total seasons
+            seasons = int(show.getDuration())  
+            totalSeasons += seasons
+            
+            # Cast total
+            for actor in show.getCast().split(', '):
+                cast[actor] = cast.get(actor, 0) + 1
+
+            # Genre total
+            for genre in show.getGenres().split(', '):
+                genres[genre] = genres.get(genre, 0) + 1
+
+        # stat calcs
+        totalTVShows = len(tv_shows)
+        ratingPercentages = {r: f"{(count / totalTVShows * 100):.2f}%" for r, count in ratings.items()}
+        averageSeasons = f"{totalSeasons / totalTVShows:.2f}"
+        mostCommonActor = max(cast, key=cast.get)
+        mostCommonGenre = max(genres, key=genres.get)
+
+
+        #printing -----------------------------------------------!!! ARE WE PRINTING OR MAKING A BIG RETURN STATEMENT? !!!
+        print(f"Rating Percentages: {ratingPercentages}")
+        print(f"Average Number of Seasons: {averageSeasons}")
+        print(f"Most Common Actor: {mostCommonActor}")
+        print(f"Most Common Genre: {mostCommonGenre}")
+
 
     def getBookStats(self):
-        # Implement getting statistics for books
-        pass
+
+        totalPageCount = 0
+        authors = {}
+        publishers = {}
+
+        for book in self.__books.values():
+            # pg count
+            pageCount = int(book.getPageCount())
+            totalPageCount += pageCount
+            
+            # book count by author
+            author = book.getAuthor()
+            authors[author] = authors.get(author, 0) + 1
+
+            # book count by pub
+            publisher = book.getPublisher()
+            publishers[publisher] = publishers.get(publisher, 0) + 1
+
+        # stat calc
+        totalBooks = len(self.__books)
+        averagePageCount = f"{totalPageCount / totalBooks:.2f}" 
+        mostCommonAuthor = max(authors, key=authors.get)
+        mostCommonPublisher = max(publishers, key=publishers.get)
+
+        # printing  -----------------------------------------------!!! ARE WE PRINTING OR MAKING A BIG RETURN STATEMENT? !!!
+        print(f"Average Page Count: {averagePageCount}")
+        print(f"Author with Most Books: {mostCommonAuthor}")
+        print(f"Publisher with Most Books: {mostCommonPublisher}")
 
     def searchTVMovies(self, title, director, cast, genre):
         # Implement searching for TV shows and movies
