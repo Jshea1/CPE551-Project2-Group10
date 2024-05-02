@@ -47,8 +47,6 @@ class Recommender:
     def loadAssociations(self):
         # Implement loading associations from file
         # creating new member variable dicts to store associations
-        self.showassociations = {}
-        self.bookassociation = {}
         while True:
             # Opens associated file and stores association in a dict in {id:[list]} format
             # with id(key) being showid or bookid as per the requirement and 
@@ -60,17 +58,23 @@ class Recommender:
                         for line in associationfile:
                             _line = line.strip().split(',')
                             # Show -> Books association
-                            if _line[0] not in self.showassociations:
-                                self.showassociations[_line[0]]=[]
-                                self.showassociations[_line[0]].append(_line[1])
+                            if _line[0] not in self.__associations:
+                                self.__associations[_line[0]] = {_line[1]:1}
                             else:
-                                self.showassociations[_line[0]].append(_line[1])
-                            # Books -> show associations
-                            if _line[1] not in self.bookassociation:
-                                self.showassociations[_line[1]]=[]
-                                self.showassociations[_line[1]].append(_line[0])
+                                if _line[1] not in self.__associations[_line[0]]:
+                                    self.__associations[_line[0]][_line[1]] = 1
+                                else:
+                                    self.__associations[_line[0]][_line[1]] += 1
+                            
+                            # Book -> Shows association
+                            if _line[1] not in self.__associations:
+                                self.__associations[_line[1]] = {_line[0]:1}
                             else:
-                                self.showassociations[_line[1]].append(_line[0])
+                                if _line[0] not in self.__associations[_line[1]]:
+                                    self.__associations[_line[1]][_line[0]] = 1
+                                else:
+                                    self.__associations[_line[1]][_line[0]] += 1
+
                     break
             else:
                 messagebox.showerror('Error','No File Selected')
@@ -267,13 +271,65 @@ class Recommender:
 
     def searchTVMovies(self, title, director, cast, genre):
         # Implement searching for TV shows and movies
+        self.__query= []
+        if not title and not director and not cast and not genre:
+            messagebox.showerror('Error', 'Please enter a search term')
+        elif title:
+            for show in self.__shows.values():
+                if title in show.getTitle():
+                    self.__query.append(show)
+        elif director:
+            for show in self.__shows.values():
+                if director in show.getDirectors():
+                    self.__query.append(show)
+        elif cast:
+            for show in self.__shows.values():
+                if cast in show.getCast():
+                    self.__query.append(show)
+        elif genre:
+            for show in self.__shows.values():
+                if genre in show.getGenres():
+                    self.__query.append(show)
         
-        pass
+        if len(self.__query) == 0:
+            messagebox.showerror('No Results', 'No Results Found')
+        return self.__query
+        
+        
 
     def searchBooks(self, title, author, publisher):
         # Implement searching for books
-        pass
 
-    def getRecommendations(self, type_, title):
+        self.__query = []
+        if not title and not author and not publisher:
+            messagebox.showerror('Error', 'Please enter a search term')
+        elif title:
+            for book in self.__books.values():
+                if title in book.getTitle():
+                    self.__query.append(book)
+        elif author:
+            for book in self.__books.values():
+                if author in book.getAuthors():
+                    self.__query.append(book)
+        elif publisher:
+            for book in self.__books.values():
+                if publisher in book.getPublisher():
+                    self.__query.append(book)
+        if len(self.__query) == 0:
+            messagebox.showerror('No Results', 'No Results Found')
+        return self.__query
+
+    def getRecommendations(self, type, title):
         # Implement getting recommendations
-        pass
+        self.__recommendations = []
+        if type == 'Book':
+            for book in self.__books.values():
+                if title in book.getTitle():
+                    for show in self.__associations[book.getId()]:
+                        self.__recommendations.append(self.__shows[show])
+        elif type == 'Show':
+            for show in self.__shows.values():
+                if title in show.getTitle():
+                    for book in self.__associations[show.getId()]:
+                        self.__recommendations.append(self.__books[book])
+        return self.__recommendations
