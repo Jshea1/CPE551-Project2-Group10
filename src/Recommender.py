@@ -185,11 +185,13 @@ class Recommender:
             
             # director total
             director = movie.getDirectors()
-            directors[director] = directors.get(director, 0) + 1
+            if director:
+                directors[director] = directors.get(director, 0) + 1
             
             # cast total
             for actor in movie.getCast().split(', '):
-                actors[actor] = actors.get(actor, 0) + 1
+                if actor:
+                    actors[actor] = actors.get(actor, 0) + 1
 
             # genre total
             for genre in movie.getGenres().split(', '):
@@ -238,16 +240,14 @@ class Recommender:
             seasons = int(show.getDuration().split(' ')[0])  
             totalSeasons += seasons
             
-            # Cast total
-            for actor in show.getCast().split('\\'):
-                if actor not in cast:
-                    cast[actor] = 1
-                else:
-                    cast[actor] += 1
-        
+
+            for actor in show.getCast().split(", "):
+                if actor:
+                    cast[actor] = cast.get(actor, 0) + 1
+                
 
             # Genre total
-            for genre in show.getGenres().split('\\'):
+            for genre in show.getGenres().split(','):
                 if genre not in genres:
                     genres[genre] = 1
                 else:
@@ -270,11 +270,6 @@ class Recommender:
                 f"Most Common Genre: {mostCommonGenre}")
 
 
-        #returning
-        return (f"Rating Percentages: {ratingPercentages}\n"
-                f"Average Number of Seasons: {averageSeasons}\n"
-                f"Most Common Actor: {mostCommonActor}\n"
-                f"Most Common Genre: {mostCommonGenre}")
 
 
 
