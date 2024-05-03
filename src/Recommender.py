@@ -195,16 +195,17 @@ class Recommender:
             for genre in movie.getGenres().split(', '):
                 genres[genre] = genres.get(genre, 0) + 1
 
-        # stat calcs
         totalMovies = len(movies)
         ratingPercentages = {r: f"{(count / totalMovies * 100):.2f}%" for r, count in ratings.items()}
+        ratingOutput = "\n".join(f"{rating}: {percentage}" for rating, percentage in ratingPercentages.items())
         averageDuration = f"{totalDuration / totalMovies:.2f}"
         mostCommonDirector = max(directors, key=directors.get)
         mostCommonActor = max(actors, key=actors.get)
         mostCommonGenre = max(genres, key=genres.get)
 
         # return
-        return (f"Rating Percentages: {ratingPercentages}\n"
+        return (f"Rating Percentages:\n"
+                f"{ratingOutput}\n"
                 f"Average Movie Duration: {averageDuration} minutes\n"
                 f"Most Common Director: {mostCommonDirector}\n"
                 f"Most Common Actor: {mostCommonActor}\n"
@@ -255,9 +256,18 @@ class Recommender:
         # stat calcs
         totalTVShows = len(tv_shows)
         ratingPercentages = {r: f"{(count / totalTVShows * 100):.2f}%" for r, count in ratings.items()}
+        ratingOutput = "\n".join(f"{rating}: {percentage}" for rating, percentage in ratingPercentages.items())
         averageSeasons = f"{totalSeasons / totalTVShows:.2f}"
         mostCommonActor = max(cast, key=cast.get)
         mostCommonGenre = max(genres, key=genres.get)
+
+
+        #returning
+        return (f"Rating Percentages:\n"
+                f"{ratingOutput}\n"
+                f"Average Number of Seasons: {averageSeasons}\n"
+                f"Most Common Actor: {mostCommonActor}\n"
+                f"Most Common Genre: {mostCommonGenre}")
 
 
         #returning
@@ -327,6 +337,7 @@ class Recommender:
         
         if len(self.__query) == 0:
             messagebox.showerror('No Results', 'No Results Found')
+        print(self.__query)
         return self.__query
         
         
@@ -337,13 +348,14 @@ class Recommender:
         self.__query = []
         if not title and not author and not publisher:
             messagebox.showerror('Error', 'Please enter a search term')
+            return
         elif title:
             for book in self.__books.values():
                 if title in book.getTitle():
                     self.__query.append(book)
         elif author:
             for book in self.__books.values():
-                if author in book.getAuthors():
+                if author in book.getAuthor():
                     self.__query.append(book)
         elif publisher:
             for book in self.__books.values():
@@ -359,11 +371,14 @@ class Recommender:
         if type == 'Book':
             for book in self.__books.values():
                 if title in book.getTitle():
-                    for show in self.__associations[book.getId()]:
+                    for show in self.__associations[book.getID()]:
                         self.__recommendations.append(self.__shows[show])
-        elif type == 'Show':
+        elif type == 'TV Show' or type == 'Movie':
             for show in self.__shows.values():
                 if title in show.getTitle():
-                    for book in self.__associations[show.getId()]:
+                    for book in self.__associations[show.getID()]:
                         self.__recommendations.append(self.__books[book])
+        if len(self.__recommendations) == 0:
+            messagebox.showerror('No Recommendations', 'No Recommendations Found')
+            return
         return self.__recommendations

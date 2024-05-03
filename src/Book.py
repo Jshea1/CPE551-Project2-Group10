@@ -12,6 +12,32 @@ class Books(Media):
         self.__numPages = numPages
 
         super().__init__(id, title, rating)
+        
+    def __str__(self):
+        return f'''Title: {self.getTitle()}
+Author: 
+{self.getAuthor()}
+Average Rating: 
+{self.getRating()}
+ISBN: 
+{self.getIsbn()}
+ISBN13: 
+{self.getIsbn13()}
+Language Code: 
+{self.getLanguageCode()}
+Pages: 
+{self.getNumPages()}
+Number of Ratings: 
+{self.getNumOfRatings()}
+Publication Date: 
+{self.getPubDate()}
+Publisher: 
+{self.getPublisher()}
+
+***********************************************************************
+
+'''
+
 
     def getAuthor(self):
         return self.__author

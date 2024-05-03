@@ -15,6 +15,23 @@ class Show(Media):
         self.__duration = duration
         self.__genres = genres
         self.__description = description
+    
+    def __str__(self):
+        return f'''Title: {self.getTitle()}
+Show Type: {self.getShowType()}
+Directors: {self.getDirectors()}
+Cast: {self.getCast()}
+Country Code: {self.getCountryCode()}
+Date Added: {self.getDateAdded()}
+Release Year: {self.getReleaseYear()}
+Average Rating: {self.getRating()}
+Duration: {self.getDuration()}
+Genres: {self.getGenres()}
+Description: {self.getDescription()}
+
+***********************************************************************
+
+'''
 
     def getShowType(self):
         return self.__showType
