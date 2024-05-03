@@ -7,54 +7,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-
-
-class Recommender:
-    def __init__(self):
-        self._movies = []
-        self._tvShows = []
-        self._books = []
-        self._movieStats = "No stats"
-        self._tvStats = "No TV show statistics"
-        self._bookStats = "No book statistics"
-
-    def loadData(self):
-        self._movies = [("Example Movie", 120), ("Example Movie", 120), ("Example Movie", 120)]
-        self._tvShows = [("Example TV Show", 120), ("Example TV show", 120), ("Example TV show", 120)]
-        self._books = [("Example Book", "Author A"), ("Example Book", "Author B")]
-        self._movieStats = "no stats"
-        self._tvStats = "no stats"
-        self._bookStats = ""
-
-    def getMovies(self):
-        if not self._movies:
-            return "No data is loaded yet"
-
-        maxTitleLength = max(len(title) for title, _ in self._movies)
-
-        header = f"{'Title'.ljust(maxTitleLength + 4)}Runtime"
-        movieTabFormat = [f"{title.ljust(maxTitleLength + 4)}{runtime} min" for title, runtime in self._movies]
-        return header + "\n" + "\n".join(movieTabFormat)
-
-    def getTVShows(self):
-        if not self._tvShows:
-            return "No data is loaded yet"
-
-        maxTitleLength = max(len(title) for title, _ in self._tvShows)
-
-        header = f"{'Title'.ljust(maxTitleLength + 4)}Runtime"
-        tvTabFormat = [f"{title.ljust(maxTitleLength + 4)}{runtime} min" for title, runtime in self._tvShows]
-        return header + "\n" + "\n".join(tvTabFormat)
-
-    def getBooks(self):
-        if not self._books:
-            return "No book data loaded yet"
-        maxTitleLength = max(len(title) for title, _ in self._books)
-        header = f"{'Title'.ljust(maxTitleLength + 4)}Author"
-        booksTabFormat = [f"{title.ljust(maxTitleLength + 4)}{author}" for title, author in self._books]
-        return header + "\n" + "\n".join(booksTabFormat)
-
-
+from Recommender import Recommender
 class RecommenderGUI:
     def __init__(self):
         self._recommender = Recommender()
@@ -217,15 +170,15 @@ class RecommenderGUI:
 
         self._buttons = []
 
-        button = tk.Button(self._buttonFrame, text=f"Load Shows")
+        button = tk.Button(self._buttonFrame, text=f"Load Shows", command=self.loadShows)
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
-        button = tk.Button(self._buttonFrame, text=f"Load Books")
+        button = tk.Button(self._buttonFrame, text=f"Load Books", command=self.loadBooks)
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
-        button = tk.Button(self._buttonFrame, text=f"Load Recommendations")
+        button = tk.Button(self._buttonFrame, text=f"Load Recommendations", command=self.loadAssociations)
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
@@ -237,35 +190,44 @@ class RecommenderGUI:
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
-        self._recommender.loadData()
-        self.updateMovies()
-        self.updateTVshows()
-        self.updateBooks()
+    def loadShows(self):
+        self._recommender.loadShows()
+
+        moviesList = self._recommender.getMovieList()
+        moviesStats = self._recommender.getMovieStats()
+
+        tvList = self._recommender.getTVList()
+        tvStats = self._recommender.getTVStats()
+
+        self._movieText.config(state='normal')
+        self._movieText.delete(1.0, tk.END)
+        self._movieText.insert(tk.END, moviesList + "\n" + moviesStats)
+        self._movieText.config(state='disabled')
+
+        self._tvShowText.config(state='normal')
+        self._tvShowText.delete(1.0, tk.END)
+        self._tvShowText.insert(tk.END, tvList + "\n" + tvStats)
+        self._tvShowText.config(state='disabled')
+
+    def loadBooks(self):
+        self._recommender.loadBooks()
+
+        booksList = self._recommender.getBookList()
+        booksStats = self._recommender.getBookStats()
+
+        self._bookText.config(state='normal')
+        self._bookText.delete(1.0, tk.END)
+        self._bookText.insert(tk.END, booksList + "\n" + booksStats)
+        self._bookText.config(state='disabled')
+
+    def loadAssociations(self):
+        self._recommender.loadAssociations()
 
     def creditInfoBox(self):
         messagebox.showinfo("Information", "Saurabh Raman Parkar     Yash Patel     John Shea\n"
                                            "Project completed on May-05-2024")
 
-    def updateMovies(self):
-        data = self._recommender.getMovies()
-        self._movieText.config(state='normal')
-        self._movieText.delete(1.0, tk.END)
-        self._movieText.insert(tk.END, data)
-        self._movieText.config(state='disabled')
 
-    def updateTVshows(self):
-        data = self._recommender.getTVShows()
-        self._tvShowText.config(state='normal')
-        self._tvShowText.delete(1.0, tk.END)
-        self._tvShowText.insert(tk.END, data)
-        self._tvShowText.config(state='disabled')
-
-    def updateBooks(self):
-        data = self._recommender.getBooks()
-        self._bookText.config(state='normal')
-        self._bookText.delete(1.0, tk.END)
-        self._bookText.insert(tk.END, data)
-        self._bookText.config(state='disabled')
 
     @property
     def rootWindow(self):
