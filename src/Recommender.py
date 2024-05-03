@@ -242,7 +242,7 @@ class Recommender:
             
 
             for actor in show.getCast().split(", "):
-                if actor:
+                if actor and "1" not in actor:
                     cast[actor] = cast.get(actor, 0) + 1
                 
 
@@ -252,7 +252,6 @@ class Recommender:
                     genres[genre] = 1
                 else:
                     genres[genre] += 1
-
         # stat calcs
         totalTVShows = len(tv_shows)
         ratingPercentages = {r: f"{(count / totalTVShows * 100):.2f}%" for r, count in ratings.items()}
