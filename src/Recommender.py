@@ -84,66 +84,60 @@ class Recommender:
                                 
 
     def getMovieList(self):
-        movies = {}
+        self.movies = {}
         #filtering only movies
         for id, info in self.__shows.items():
             if info.getShowType() == 'Movie':  
-                movies[id] = info
+                self.movies[id] = info
 
 
         # max len for formatting
         maxTitleLength = 0
-        maxDurationLength = 0
-        for movie in movies.values():
-            if len(movie['title']) > maxTitleLength:
-                maxTitleLength = len(movie['title'])
-            if len(movie['duration']) > maxDurationLength:
-                maxDurationLength = len(movie['duration'])
+        for movie in self.movies.values():
+            if len(movie.getTitle()) > maxTitleLength:
+                maxTitleLength = len(movie.getTitle())
 
             # Build the output as a list of strings
-            output = []
-            header = f"{'Title':<{maxTitleLength}} | {'Duration':>{maxDurationLength}}"
-            output.append(header)
+        output = []
+        header = f"{'Title':<{maxTitleLength}} | Duration"
+        output.append(header)
 
-            # Adding each movie's information formatted
-            for movie in movies.values():
-                title = movie.getTitle()
-                duration = movie.getDuration()
-                line = f"{title:<{maxTitleLength}} | {duration:>{maxDurationLength}}"
-                output.append(line)
+        # Adding each movie's information formatted
+        for movie in self.movies.values():
+            title = movie.getTitle()
+            duration = movie.getDuration()
+            line = f"{title:<{maxTitleLength}} | {duration}"
+            output.append(line)
 
-            return "\n".join(output)
+        return "\n".join(output)
 
     def getTVList(self):
         # filtering only shows
-        TVShows = {}
+        self.TVShows = {}
         for id, info in self.__shows.items():
             if info.getShowType() == 'TV Show':
-                TVShows[id] = info
+                self.TVShows[id] = info
 
         # max len for formatt
         maxTitleLength = 0
-        maxSeasonsLength = 0
-        for TVShows in TVShows.values():
-            if len(TVShows['title']) > maxTitleLength:
-                maxTitleLength = len(TVShows['title'])
-            seasonsLength = len(TVShows['duration'])  
-            if seasonsLength > maxSeasonsLength:
-                maxSeasonsLength = seasonsLength
+        for show in self.TVShows.values():
+            titlelength = len(show.getTitle())
+            if titlelength > maxTitleLength:
+                maxTitleLength = titlelength
 
             # Build the output as a list of strings
-            output = []
-            header = f"{'Title':<{maxTitleLength}} | {'Duration':>{maxSeasonsLength}}"
-            output.append(header)
+        output = []
+        header = f"{'Title':<{maxTitleLength}} | Duration"
+        output.append(header)
 
-            # Adding each TV show's information formatted
-            for show in TVShows.values():
-                title = show.getTitle()
-                seasons = show.getDuration()
-                line = f"{title:<{maxTitleLength}} | {seasons:>{maxSeasonsLength}}"
-                output.append(line)
+        # Adding each TV show's information formatted
+        for show in self.TVShows.values():
+            title = show.getTitle()
+            seasons = show.getDuration()
+            line = f"{title:<{maxTitleLength}} | {seasons}"
+            output.append(line)
 
-            return "\n".join(output)
+        return "\n".join(output)
 
 
     def getBookList(self):
@@ -171,7 +165,6 @@ class Recommender:
     def getMovieStats(self):
         movies = {}
         for id, info in self.__shows.items():
-            print(info.getShowType())
             if info.getShowType() == 'Movie':
                 movies[id] = info
 
@@ -187,7 +180,7 @@ class Recommender:
             ratings[rating] = ratings.get(rating, 0) + 1
             
             # duration total
-            duration = int(movie.getDuration())
+            duration = int(movie.getDuration().split(' ')[0])
             totalDuration += duration
             
             # director total
@@ -241,7 +234,7 @@ class Recommender:
                 ratings[rating] += 1
             
             # total seasons
-            seasons = int(show.getDuration())  
+            seasons = int(show.getDuration().split(' ')[0])  
             totalSeasons += seasons
             
             # Cast total
@@ -312,8 +305,9 @@ class Recommender:
     def searchTVMovies(self, title, director, cast, genre):
         # Implement searching for TV shows and movies
         self.__query= []
-        if not title and not director and not cast and not genre:
+        if title=='' and director=='' and cast=='' and genre=='':
             messagebox.showerror('Error', 'Please enter a search term')
+            return
         elif title:
             for show in self.__shows.values():
                 if title in show.getTitle():
