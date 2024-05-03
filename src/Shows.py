@@ -3,7 +3,7 @@
 from Media import Media
 
 class Show(Media):
-    def __init__(self, id, title, averageRating, showType, directors, cast, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
+    def __init__(self, id, showType, title,directors,cast, averageRating, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
         super().__init__(id, title, averageRating)
         self.__showType = showType
         self.__directors = directors

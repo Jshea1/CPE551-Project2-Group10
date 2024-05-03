@@ -1,7 +1,7 @@
 from Media import Media
 
 class Books(Media):
-    def __init__(self, id: str, title: str, rating: float, author: str, isbn: float, isbn13: float, numOfRatings: float, pubDate: str, publisher: str, languageCode: str, numPages: int):
+    def __init__(self, id: str, title: str,author: str, rating: float, isbn: float, isbn13: float,languageCode: str, numPages: float, numOfRatings: float, pubDate: str, publisher: str):
         self.__author = author
         self.__isbn = isbn
         self.__isbn13 = isbn13

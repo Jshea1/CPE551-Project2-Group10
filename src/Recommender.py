@@ -16,7 +16,8 @@ class Recommender:
             file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):
-                    with open(file) as bookfile:                    
+                    with open(file) as bookfile:  
+                        next(bookfile)                  
                         for line in bookfile:
                             _line = line.strip().split(',')
                             
@@ -35,6 +36,7 @@ class Recommender:
             if file:
                 if os.path.exists(file):                
                     with open(file) as showfile:
+                        next(showfile)
                         for line in showfile:
                             _line = line.strip().split(',')
                             self.__shows[f'{_line[0]}'] = Show(*_line)
@@ -85,7 +87,7 @@ class Recommender:
         movies = {}
         #filtering only movies
         for id, info in self.__shows.items():
-            if info.getType() == 'Movie':  
+            if info.getShowType() == 'Movie':  
                 movies[id] = info
 
 
@@ -116,7 +118,7 @@ class Recommender:
         # filtering only shows
         TVShows = {}
         for id, info in self.__shows.items():
-            if info.getType() == 'TV Show':
+            if info.getShowType() == 'TV Show':
                 TVShows[id] = info
 
         # max len for formatt
@@ -147,31 +149,29 @@ class Recommender:
     def getBookList(self):
         # max len for formatting
         maxTitleLength = 0
-        maxAuthorsLength = 0
         for book in self.__books.values():
-            if len(book.title) > maxTitleLength:
-                maxTitleLength = len(book.title)
-            if len(book.authors) > maxAuthorsLength:
-                maxAuthorsLength = len(book.authors)
+            titleLength = len(book.getTitle())
+            if titleLength > maxTitleLength:
+                maxTitleLength = titleLength
 
-        # Build the output as a list of strings
-            output = []
-            header = f"{'Title':<{maxTitleLength}} | {'Duration':>{maxAuthorsLength}}"
-            output.append(header)
+        output = []
+        header = f"{'Title':<{maxTitleLength}} | Author"
+        output.append(header)
 
-            # Adding each TV show's information formatted
-            for bok in self.__books():
-                title = book.getTitle()
-                seasons = book.getDuration()
-                line = f"{title:<{maxTitleLength}} | {seasons:>{maxAuthorsLength}}"
-                output.append(line)
+        # Format each book's information
+        for book in self.__books.values():
+            title = book.getTitle()
+            author = book.getAuthor()
+            line = f"{title:<{maxTitleLength}} | {author}"
+            output.append(line)
 
-            return "\n".join(output)
+        return "\n".join(output)
 
 
     def getMovieStats(self):
         movies = {}
         for id, info in self.__shows.items():
+            print(info.getShowType())
             if info.getShowType() == 'Movie':
                 movies[id] = info
 
@@ -235,19 +235,29 @@ class Recommender:
         for show in tv_shows.values():
             # total ratings
             rating = show.getRating()
-            ratings[rating] = ratings.get(rating, 0) + 1
+            if rating not in ratings:
+                ratings[rating] = 1
+            else:
+                ratings[rating] += 1
             
             # total seasons
             seasons = int(show.getDuration())  
             totalSeasons += seasons
             
             # Cast total
-            for actor in show.getCast().split(', '):
-                cast[actor] = cast.get(actor, 0) + 1
+            for actor in show.getCast().split('\\'):
+                if actor not in cast:
+                    cast[actor] = 1
+                else:
+                    cast[actor] += 1
+        
 
             # Genre total
-            for genre in show.getGenres().split(', '):
-                genres[genre] = genres.get(genre, 0) + 1
+            for genre in show.getGenres().split('\\'):
+                if genre not in genres:
+                    genres[genre] = 1
+                else:
+                    genres[genre] += 1
 
         # stat calcs
         totalTVShows = len(tv_shows)
@@ -272,17 +282,20 @@ class Recommender:
         publishers = {}
 
         for book in self.__books.values():
-            # pg count
-            pageCount = int(book.getPageCount())
-            totalPageCount += pageCount
-            
-            # book count by author
-            author = book.getAuthor()
-            authors[author] = authors.get(author, 0) + 1
+                    pageCount = float(book.getNumPages())
+                    totalPageCount += pageCount
 
-            # book count by pub
-            publisher = book.getPublisher()
-            publishers[publisher] = publishers.get(publisher, 0) + 1
+                    author = book.getAuthor()
+                    if author in authors:
+                        authors[author] += 1
+                    else:
+                        authors[author] = 1
+
+                    publisher = book.getPublisher()
+                    if publisher in publishers:
+                        publishers[publisher] +=1
+                    else:
+                        publishers[publisher]=1
 
         # stat calc
         totalBooks = len(self.__books)
