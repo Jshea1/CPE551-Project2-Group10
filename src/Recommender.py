@@ -13,7 +13,7 @@ class Recommender:
         '''Loads Books into Dictionary from csv file'''
 
         while True:
-            file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
+            file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):
                     with open(file) as bookfile:                    
@@ -31,7 +31,7 @@ class Recommender:
     def loadShows(self):
         '''Loads Shows into Dictionary from csv file'''
         while True:
-            file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
+            file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):                
                     with open(file) as showfile:
@@ -51,7 +51,7 @@ class Recommender:
             # Opens associated file and stores association in a dict in {id:[list]} format
             # with id(key) being showid or bookid as per the requirement and 
             # list(values) being associated books/shows
-            file = filedialog.askopenfile(initialdir=os.getcwd(), title='Loads Associations File',filetypes=[("CSV files", "*.csv")])
+            file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Loads Associations File',filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):
                     with open(file) as associationfile:
@@ -98,12 +98,19 @@ class Recommender:
             if len(movie['duration']) > maxDurationLength:
                 maxDurationLength = len(movie['duration'])
 
-        # printing header
-        print(f"{'Title':<{maxTitleLength}} | {'Duration':>{maxDurationLength}}")
+            # Build the output as a list of strings
+            output = []
+            header = f"{'Title':<{maxTitleLength}} | {'Duration':>{maxDurationLength}}"
+            output.append(header)
 
-        # printing vals in format
-        for movie in movies.values():
-            print(f"{movie['title']:<{maxTitleLength}} | {movie['duration']:>{maxDurationLength}}")
+            # Adding each movie's information formatted
+            for movie in movies.values():
+                title = movie.getTitle()
+                duration = movie.getDuration()
+                line = f"{title:<{maxTitleLength}} | {duration:>{maxDurationLength}}"
+                output.append(line)
+
+            return "\n".join(output)
 
     def getTVList(self):
         # filtering only shows
@@ -122,12 +129,19 @@ class Recommender:
             if seasonsLength > maxSeasonsLength:
                 maxSeasonsLength = seasonsLength
 
-        # printing headers
-        print(f"{'Title':<{maxTitleLength}} | {'Seasons':>{maxSeasonsLength}}")
+            # Build the output as a list of strings
+            output = []
+            header = f"{'Title':<{maxTitleLength}} | {'Duration':>{maxSeasonsLength}}"
+            output.append(header)
 
-        # prtinin vals in format
-        for TVShows in TVShows.values():
-            print(f"{TVShows['title']:<{maxTitleLength}} | {TVShows['duration']:>{maxSeasonsLength}}")
+            # Adding each TV show's information formatted
+            for show in TVShows.values():
+                title = show.getTitle()
+                seasons = show.getDuration()
+                line = f"{title:<{maxTitleLength}} | {seasons:>{maxSeasonsLength}}"
+                output.append(line)
+
+            return "\n".join(output)
 
 
     def getBookList(self):
@@ -140,12 +154,19 @@ class Recommender:
             if len(book.authors) > maxAuthorsLength:
                 maxAuthorsLength = len(book.authors)
 
-        # printing headers
-        print(f"{'Title':<{maxTitleLength}} | {'Authors':<{maxAuthorsLength}}")
+        # Build the output as a list of strings
+            output = []
+            header = f"{'Title':<{maxTitleLength}} | {'Duration':>{maxAuthorsLength}}"
+            output.append(header)
 
-        # printing values in format
-        for book in self.__books.values():
-            print(f"{book.title:<{maxTitleLength}} | {book.authors:<{maxAuthorsLength}}")
+            # Adding each TV show's information formatted
+            for bok in self.__books():
+                title = book.getTitle()
+                seasons = book.getDuration()
+                line = f"{title:<{maxTitleLength}} | {seasons:>{maxAuthorsLength}}"
+                output.append(line)
+
+            return "\n".join(output)
 
 
     def getMovieStats(self):
