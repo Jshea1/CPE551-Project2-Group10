@@ -8,6 +8,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 from Recommender import Recommender
+
+
 class RecommenderGUI:
     def __init__(self):
         self._recommender = Recommender()
@@ -70,7 +72,7 @@ class RecommenderGUI:
         self._TypeLabel.grid(row=0, column=0, padx=0, pady=5)
         self._typeCombobox = ttk.Combobox(self._searchMoviesTab, values=["Movie", "TV Show"])
         self._typeCombobox.grid(row=0, column=1, padx=0, pady=10)
-        self._typeCombobox.set("Movie")  # Default value
+        self._typeCombobox.set("Movie") # showing movie as default
 
         self._titleLabel = ttk.Label(self._searchMoviesTab, text="Title:")
         self._titleLabel.grid(row=1, column=0, padx=10, pady=5)
@@ -141,10 +143,11 @@ class RecommenderGUI:
         self._recommendationsTab = ttk.Frame(self._notebook)
         self._notebook.add(self._recommendationsTab, text="Recommendations")
 
-        self._titleLabel = ttk.Label(self._recommendationsTab, text="Type:")
-        self._titleLabel.grid(row=1, column=0, padx=10, pady=5)
-        self._titleEntry = ttk.Entry(self._recommendationsTab)
-        self._titleEntry.grid(row=1, column=1, padx=10, pady=5)
+        self._TypeLabel = ttk.Label(self._recommendationsTab, text="Type:")
+        self._TypeLabel.grid(row=0, column=0, padx=0, pady=5)
+        self._typeCombobox = ttk.Combobox(self._recommendationsTab, values=["Movie", "TV Show", "Book"])
+        self._typeCombobox.grid(row=0, column=1, padx=0, pady=10)
+        self._typeCombobox.set("Movie") # showing movie as default
 
         self._directorLabel = ttk.Label(self._recommendationsTab, text="Title:")
         self._directorLabel.grid(row=2, column=0, padx=10, pady=5)
@@ -227,7 +230,54 @@ class RecommenderGUI:
         messagebox.showinfo("Information", "Saurabh Raman Parkar     Yash Patel     John Shea\n"
                                            "Project completed on May-05-2024")
 
+    def searchShows(self):
+        choiceType = self._typeCombobox.get()
+        title = self._titleEntry.get()
+        director = self._directorEntry.get()
+        actor = self._actorEntry.get()
+        genre = self._genreEntry.get()
+        if choiceType == "Movie":
+            results = self._recommender.searchTVMovies(title=title, director=director, cast=actor, genre=genre)
+        elif choiceType == "TV Show":
+            results = self._recommender.searchTVMovies(title=title, director=director, cast=actor, genre=genre)
 
+        # not sure if combobox options should be separated like this
+
+        self._textResults.config(state='normal')
+        self._textResults.delete(1.0, tk.END)
+
+        if results:
+            for result in results:
+                self._textResults.insert(tk.END, f"{result}\n")
+
+        self._textResults.config(state='disabled')
+
+    def searchBooks(self):
+        title = self._titleEntry.get()
+        author = self._directorEntry.get()
+        publisher = self._actorEntry.get()
+        results = self._recommender.searchBooks(title=title, author=author, publisher=publisher)
+        self._textResults.config(state='normal')
+        self._textResults.delete(1.0, tk.END)
+
+        if results:
+            for result in results:
+                self._textResults.insert(tk.END, f"{result}\n")
+
+        self._textResults.config(state='disabled')
+
+    def getRecommendations(self):
+        recommendationType = self._typeCombobox.get()
+        title = self._titleEntry.get()
+        recommendations = self._recommender.getRecommendations(recommendationType, title)
+        self._textResults.config(state='normal')
+        self._textResults.delete(1.0, tk.END)
+
+        if recommendations:
+            for recommendation in recommendations:
+                self._textResults.insert(tk.END, f"{recommendation}\n")
+
+        self._textResults.config(state='disabled')
 
     @property
     def rootWindow(self):
