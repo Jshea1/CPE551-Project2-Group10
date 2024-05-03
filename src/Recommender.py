@@ -16,7 +16,7 @@ class Recommender:
             file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):
-                    with open(file) as bookfile:                    # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
+                    with open(file) as bookfile:                    
                         for line in bookfile:
                             _line = line.strip().split(',')
                             
@@ -33,7 +33,7 @@ class Recommender:
         while True:
             file = filedialog.askopenfile(initialdir=os.getcwd(), title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
             if file:
-                if os.path.exists(file):                # !!!! IDK IF IT HAS TO REPEATEDLY ASK THE USER FOR A FILE IF THEY INPUT IT WRONG!!! 
+                if os.path.exists(file):                
                     with open(file) as showfile:
                         for line in showfile:
                             _line = line.strip().split(',')
@@ -189,18 +189,22 @@ class Recommender:
         mostCommonActor = max(actors, key=actors.get)
         mostCommonGenre = max(genres, key=genres.get)
 
-        # printing stats -----------------------------------------------!!! ARE WE PRINTING OR MAKING A BIG RETURN STATEMENT? !!!
-        print(f"Rating Percentages: {ratingPercentages}")
-        print(f"Average Movie Duration: {averageDuration} minutes")
-        print(f"Most Common Director: {mostCommonDirector}")
-        print(f"Most Common Actor: {mostCommonActor}")
-        print(f"Most Common Genre: {mostCommonGenre}")
+        # return
+        return (f"Rating Percentages: {ratingPercentages}\n"
+                f"Average Movie Duration: {averageDuration} minutes\n"
+                f"Most Common Director: {mostCommonDirector}\n"
+                f"Most Common Actor: {mostCommonActor}\n"
+                f"Most Common Genre: {mostCommonGenre}")
+
 
 
 
     def getTVStats(self):
         # Filter TV shows from the list
-        tv_shows = {id: info for id, info in self.__shows.items() if info.getShowType() == 'TV Show'}
+        tv_shows = {}
+        for id, info in self.__shows.items():
+            if info.getShowType() == 'TV Show':
+                tv_shows[id] = info
 
         ratings = {}
         totalSeasons = 0
@@ -232,11 +236,12 @@ class Recommender:
         mostCommonGenre = max(genres, key=genres.get)
 
 
-        #printing -----------------------------------------------!!! ARE WE PRINTING OR MAKING A BIG RETURN STATEMENT? !!!
-        print(f"Rating Percentages: {ratingPercentages}")
-        print(f"Average Number of Seasons: {averageSeasons}")
-        print(f"Most Common Actor: {mostCommonActor}")
-        print(f"Most Common Genre: {mostCommonGenre}")
+        #returning
+        return (f"Rating Percentages: {ratingPercentages}\n"
+                f"Average Number of Seasons: {averageSeasons}\n"
+                f"Most Common Actor: {mostCommonActor}\n"
+                f"Most Common Genre: {mostCommonGenre}")
+
 
 
     def getBookStats(self):
@@ -264,10 +269,11 @@ class Recommender:
         mostCommonAuthor = max(authors, key=authors.get)
         mostCommonPublisher = max(publishers, key=publishers.get)
 
-        # printing  -----------------------------------------------!!! ARE WE PRINTING OR MAKING A BIG RETURN STATEMENT? !!!
-        print(f"Average Page Count: {averagePageCount}")
-        print(f"Author with Most Books: {mostCommonAuthor}")
-        print(f"Publisher with Most Books: {mostCommonPublisher}")
+        # returning
+        return (f"Average Page Count: {averagePageCount}\n"
+                f"Author with Most Books: {mostCommonAuthor}\n"
+                f"Publisher with Most Books: {mostCommonPublisher}")
+
 
     def searchTVMovies(self, title, director, cast, genre):
         # Implement searching for TV shows and movies
