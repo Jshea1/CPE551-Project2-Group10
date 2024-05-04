@@ -1,7 +1,33 @@
 from Media import Media
 
 class Books(Media):
+    '''Sub Class for Books, stores attributes of Books'''
     def __init__(self, id: str, title: str,author: str, rating: float, isbn: float, isbn13: float,languageCode: str, numPages: float, numOfRatings: float, pubDate: str, publisher: str):
+        '''
+        Paramters
+        ---------
+        id: str
+            stores id of book
+        title: str
+            title of book
+        author: str
+            author of book
+        rating: float
+            average rating of book
+        isbn: float
+            isbn of book
+        isbn13: float
+            isbn13 of book
+        languageCode: str
+            language code of book
+        numPages: float
+            number of pages of book
+        numOfRatings: float
+            number of ratings of book
+        pubDate: str
+            publication date of book
+        publisher: str
+            publisher of book'''
         self.__author = author
         self.__isbn = isbn
         self.__isbn13 = isbn13
@@ -38,7 +64,7 @@ Publisher:
 
 '''
 
-
+    # Getters and Setters for Books class
     def getAuthor(self):
         return self.__author
 

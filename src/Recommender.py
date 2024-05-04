@@ -10,19 +10,23 @@ class Recommender:
         self.__associations = {}
 
     def loadBooks(self):
-        '''Loads Books into Dictionary from csv file'''
-
+        '''Loads Books into member variable in Dictionary format from csv file'''
+        
         while True:
-            file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Load Books information file', filetypes=[("CSV files", "*.csv")])
+            # opens file dialog to select file
+            file = filedialog.askopenfilename(initialdir=os.getcwd()+r'/inpur_files', title='Load Books information file', filetypes=[("CSV files", "*.csv")])
             if file:
+                # checks if file exists
                 if os.path.exists(file):
                     with open(file) as bookfile:  
-                        next(bookfile)                  
+                        # skips the header
+                        next(bookfile)
+                        # reads each line and splits it by comma and stores it as
+                        # a params list to pass to book class                
                         for line in bookfile:
                             _line = line.strip().split(',')
                             
                             # Explode the line value as parameters to book class
-                            #  for this i've made sure that each element in the line will be taken in as paramater
                             self.__books[f'{_line[0]}'] = Books(*_line)
                     break
             else:
@@ -31,8 +35,9 @@ class Recommender:
 
     def loadShows(self):
         '''Loads Shows into Dictionary from csv file'''
+        
         while True:
-            file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
+            file = filedialog.askopenfilename(initialdir=os.getcwd()+r'/input_files', title='Load Shows information file', filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):                
                     with open(file) as showfile:
@@ -47,18 +52,23 @@ class Recommender:
         #pass
 
     def loadAssociations(self):
-        # Implement loading associations from file
-        # creating new member variable dicts to store associations
+        '''Loads Associations from file into associations member variable in Dictionary format from csv file'''
+        
         while True:
             # Opens associated file and stores association in a dict in {id:[list]} format
             # with id(key) being showid or bookid as per the requirement and 
             # list(values) being associated books/shows
-            file = filedialog.askopenfilename(initialdir=os.getcwd(), title='Loads Associations File',filetypes=[("CSV files", "*.csv")])
+            file = filedialog.askopenfilename(initialdir=os.getcwd()+r'/input_files', title='Loads Associations File',filetypes=[("CSV files", "*.csv")])
             if file:
                 if os.path.exists(file):
                     with open(file) as associationfile:
+                        # iterate over each line and split it by comma
+                        # and store it in the associations dictionary
+                        # with outer key being showid or bookid and inner key being associated showid or bookid
+                        # and value being the count of association
                         for line in associationfile:
                             _line = line.strip().split(',')
+                            
                             # Show -> Books association
                             if _line[0] not in self.__associations:
                                 self.__associations[_line[0]] = {_line[1]:1}
@@ -84,57 +94,63 @@ class Recommender:
                                 
 
     def getMovieList(self):
-        self.movies = {}
+        '''Filters only movies from the dictionary and returns a formatted string of all movies in the dictionary
+        Returns : str
+            Formatted string of all movies Title and Duration in the dictionary'''
+        self.__movies = {}
         #filtering only movies
         for id, info in self.__shows.items():
             if info.getShowType() == 'Movie':  
-                self.movies[id] = info
+                self.__movies[id] = info
 
 
         # max len for formatting
         maxTitleLength = 0
-        for movie in self.movies.values():
+        for movie in self.__movies.values():
             if len(movie.getTitle()) > maxTitleLength:
                 maxTitleLength = len(movie.getTitle())
 
             # Build the output as a list of strings
         output = []
-        header = f"{'Title':<{maxTitleLength}} | Duration"
+        header = f"{'Title':<{maxTitleLength}}   Duration"
         output.append(header)
 
         # Adding each movie's information formatted
-        for movie in self.movies.values():
+        for movie in self.__movies.values():
             title = movie.getTitle()
             duration = movie.getDuration()
-            line = f"{title:<{maxTitleLength}} | {duration}"
+            line = f"{title:<{maxTitleLength}}   {duration}"
             output.append(line)
 
         return "\n".join(output)
 
     def getTVList(self):
+        '''filters only TV shows from the dictionary and returns a formatted string of all TV shows in the dictionary
+        Returns : str
+            Formatted string of all TV shows Title and Duration in the dictionary'''
         # filtering only shows
-        self.TVShows = {}
+        self.__TVShows = {}
         for id, info in self.__shows.items():
             if info.getShowType() == 'TV Show':
-                self.TVShows[id] = info
+                self.__TVShows[id] = info
 
         # max len for formatt
         maxTitleLength = 0
-        for show in self.TVShows.values():
+        for show in self.__TVShows.values():
             titlelength = len(show.getTitle())
             if titlelength > maxTitleLength:
                 maxTitleLength = titlelength
 
             # Build the output as a list of strings
         output = []
-        header = f"{'Title':<{maxTitleLength}} | Duration"
+        header = f"{'Title':<{maxTitleLength}}   Duration"
         output.append(header)
 
         # Adding each TV show's information formatted
-        for show in self.TVShows.values():
+        for show in self.__TVShows.values():
             title = show.getTitle()
             seasons = show.getDuration()
-            line = f"{title:<{maxTitleLength}} | {seasons}"
+            line = f"{title:<{maxTitleLength}}   {seasons}"
             output.append(line)
 
         return "\n".join(output)
@@ -149,24 +165,21 @@ class Recommender:
                 maxTitleLength = titleLength
 
         output = []
-        header = f"{'Title':<{maxTitleLength}} | Author"
+        header = f"{'Title':<{maxTitleLength}}   Author"
         output.append(header)
 
         # Format each book's information
         for book in self.__books.values():
             title = book.getTitle()
             author = book.getAuthor()
-            line = f"{title:<{maxTitleLength}} | {author}"
+            line = f"{title:<{maxTitleLength}}  {author}"
             output.append(line)
 
         return "\n".join(output)
 
 
     def getMovieStats(self):
-        movies = {}
-        for id, info in self.__shows.items():
-            if info.getShowType() == 'Movie':
-                movies[id] = info
+        '''Gets movie stats from the movies dictionary and returns a formatted string of the stats'''
 
         ratings = {}
         totalDuration = 0
@@ -174,7 +187,7 @@ class Recommender:
         actors = {}
         genres = {}
 
-        for movie in movies.values():
+        for movie in self.__movies.values():
             # counting ratings
             rating = movie.getRating()
             ratings[rating] = ratings.get(rating, 0) + 1
@@ -197,7 +210,7 @@ class Recommender:
             for genre in movie.getGenres().split(', '):
                 genres[genre] = genres.get(genre, 0) + 1
 
-        totalMovies = len(movies)
+        totalMovies = len(self.__movies)
         ratingPercentages = {r: f"{(count / totalMovies * 100):.2f}%" for r, count in ratings.items()}
         ratingOutput = "\n".join(f"{rating}: {percentage}" for rating, percentage in ratingPercentages.items())
         averageDuration = f"{totalDuration / totalMovies:.2f}"
@@ -205,7 +218,6 @@ class Recommender:
         mostCommonActor = max(actors, key=actors.get)
         mostCommonGenre = max(genres, key=genres.get)
 
-        # return
         return (f"Rating Percentages:\n"
                 f"{ratingOutput}\n"
                 f"Average Movie Duration: {averageDuration} minutes\n"
@@ -217,18 +229,14 @@ class Recommender:
 
 
     def getTVStats(self):
-        # Filter TV shows from the list
-        tv_shows = {}
-        for id, info in self.__shows.items():
-            if info.getShowType() == 'TV Show':
-                tv_shows[id] = info
-
+        '''Gets TV show stats from the TV shows dictionary and returns a formatted string of the stats'''
+        
         ratings = {}
         totalSeasons = 0
         cast = {}
         genres = {}
 
-        for show in tv_shows.values():
+        for show in self.__TVShows.values():
             # total ratings
             rating = show.getRating()
             if rating not in ratings:
@@ -253,7 +261,7 @@ class Recommender:
                 else:
                     genres[genre] += 1
         # stat calcs
-        totalTVShows = len(tv_shows)
+        totalTVShows = len(self.__TVShows)
         ratingPercentages = {r: f"{(count / totalTVShows * 100):.2f}%" for r, count in ratings.items()}
         ratingOutput = "\n".join(f"{rating}: {percentage}" for rating, percentage in ratingPercentages.items())
         averageSeasons = f"{totalSeasons / totalTVShows:.2f}"
@@ -273,7 +281,7 @@ class Recommender:
 
 
     def getBookStats(self):
-
+        '''Gets book stats from the books dictionary and returns a formatted string of the stats'''
         totalPageCount = 0
         authors = {}
         publishers = {}
@@ -307,7 +315,9 @@ class Recommender:
 
 
     def searchTVMovies(self, title, director, cast, genre):
-        # Implement searching for TV shows and movies
+        '''Searches for TV shows and movies based on the search terms provided'''
+        
+        # query list stores the search results from the search terms
         self.__query= []
         if title=='' and director=='' and cast=='' and genre=='':
             messagebox.showerror('Error', 'Please enter a search term')
@@ -331,14 +341,14 @@ class Recommender:
         
         if len(self.__query) == 0:
             messagebox.showerror('No Results', 'No Results Found')
-        print(self.__query)
         return self.__query
         
         
 
     def searchBooks(self, title, author, publisher):
-        # Implement searching for books
+        '''Searches for books based on the search terms provided'''
 
+        # query list stores the search results from the search terms
         self.__query = []
         if not title and not author and not publisher:
             messagebox.showerror('Error', 'Please enter a search term')
@@ -360,18 +370,30 @@ class Recommender:
         return self.__query
 
     def getRecommendations(self, type, title):
-        # Implement getting recommendations
+        '''Gets recommendations based on the type and title provided from the associations dictionary'''
+        
+        # recommendations list stores the recommendations based on the type and title
+        # and association dictionary
         self.__recommendations = []
-        if type == 'Book':
-            for book in self.__books.values():
-                if title in book.getTitle():
-                    for show in self.__associations[book.getID()]:
-                        self.__recommendations.append(self.__shows[show])
-        elif type == 'TV Show' or type == 'Movie':
-            for show in self.__shows.values():
-                if title in show.getTitle():
-                    for book in self.__associations[show.getID()]:
-                        self.__recommendations.append(self.__books[book])
+        if title != '':
+            if type == 'Book':
+                for book in self.__books.values():
+                    if title in book.getTitle():
+                        for show in self.__associations[book.getID()]:
+                            self.__recommendations.append(self.__shows[show])
+            elif type == 'TV Show':
+                for show in self.__TVShows.values():
+                    if title in show.getTitle():
+                        for book in self.__associations[show.getID()]:
+                            self.__recommendations.append(self.__books[book])
+            elif type == 'Movie':
+                for show in self.__movies.values():
+                    if title in show.getTitle():
+                        for book in self.__associations[show.getID()]:
+                            self.__recommendations.append(self.__books[book])
+        elif title == '':
+            messagebox.showerror('Error', 'Please enter a title')
+            return
         if len(self.__recommendations) == 0:
             messagebox.showerror('No Recommendations', 'No Recommendations Found')
             return

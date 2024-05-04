@@ -3,7 +3,38 @@
 from Media import Media
 
 class Show(Media):
+    '''Sub Class for Shows, stores attributes of Movies and TV Shows'''
     def __init__(self, id, showType, title,directors,cast, averageRating, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
+        '''
+        Paramters
+        ---------
+        id: str
+            stores id of movie/show
+        showType: str
+            type of show Movie/ TV Show
+        title: str
+            title of show
+        directors: str
+            directors of show
+        cast: str
+            cast of show
+        averageRating: float
+            average rating of show
+        countryCode: str
+            country code of show
+        dateAdded: str
+            date added of show
+        releaseYear: str
+            release year of show
+        rating: float
+            rating of show
+        duration: str
+            duration of show
+        genres: str
+            genres of show
+        description: str
+            description of show'''
+            
         super().__init__(id, title, averageRating)
         self.__showType = showType
         self.__directors = directors
@@ -33,6 +64,7 @@ Description: {self.getDescription()}
 
 '''
 
+    # Getters and Setters for Show class
     def getShowType(self):
         return self.__showType
 

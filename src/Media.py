@@ -1,6 +1,7 @@
 # Author: Saurabh Parkar
 
 class Media:
+    '''Super Class for Books, Shows class stores common attributes of both Books and Shows'''
     def __init__(self, id: str, title: str, rating: float):
         '''
         Paramters
@@ -18,8 +19,7 @@ class Media:
         self.__title = title
         self.__rating = rating
         
-    # Accessor Functions
-    
+    # Getters and Setters for Media class
     def getID(self):
         return self.__id
     
@@ -30,8 +30,6 @@ class Media:
     def getRating(self):
         return self.__rating
     
-    # set functions might not be needed since constructor 
-    # uses parameters to set member variables
     def setID(self,ID):
         self.__id=ID
     
