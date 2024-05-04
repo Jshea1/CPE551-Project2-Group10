@@ -28,10 +28,14 @@ class RecommenderGUI:
         self._moviesTab = ttk.Frame(self._notebook)
         self._notebook.add(self._moviesTab, text="Movies")
 
-        self._movieTitleText = tk.Text(self._moviesTab, height=10, wrap='word', state='disabled')
+        self._movieTitleText = tk.Text(self._moviesTab, height=10, wrap='word',state='normal')
+        self._movieTitleText.insert(tk.END, "No Data Loaded")
+        self._movieTitleText.config(state='disabled')
         self._movieTitleText.pack(padx=10, pady=10, fill='both', expand=True)
 
-        self._movieStatsText = tk.Text(self._moviesTab, height=10, wrap='word', state='disabled')
+        self._movieStatsText = tk.Text(self._moviesTab, height=10, wrap='word', state='normal')
+        self._movieStatsText.insert(tk.END, "No Data Loaded")
+        self._movieStatsText.config(state='disabled')
         self._movieStatsText.pack(padx=10, pady=10, fill='both', expand=True)
 
         # Movies tab ends
@@ -41,10 +45,14 @@ class RecommenderGUI:
         self._tvTab = ttk.Frame(self._notebook)
         self._notebook.add(self._tvTab, text="TV Shows")
 
-        self._tvShowTitleText = tk.Text(self._tvTab, height=10, wrap='word', state='disabled')
+        self._tvShowTitleText = tk.Text(self._tvTab, height=10, wrap='word', state='normal')
+        self._tvShowTitleText.insert(tk.END, "No Data Loaded")
+        self._tvShowTitleText.config(state='disabled')
         self._tvShowTitleText.pack(padx=10, pady=10, fill='both', expand=True)
 
-        self._tvShowStatsText = tk.Text(self._tvTab, height=10, wrap='word', state='disabled')
+        self._tvShowStatsText = tk.Text(self._tvTab, height=10, wrap='word', state='normal')
+        self._tvShowStatsText.insert(tk.END, "No Data Loaded")
+        self._tvShowStatsText.config(state='disabled')
         self._tvShowStatsText.pack(padx=10, pady=10, fill='both', expand=True)
 
         self._tvScrollbar = tk.Scrollbar(self._tvTab, command=self._tvShowTitleText.yview)
@@ -58,10 +66,14 @@ class RecommenderGUI:
         self._booksTab = ttk.Frame(self._notebook)
         self._notebook.add(self._booksTab, text="Books")
 
-        self._bookTitleText = tk.Text(self._booksTab, height=10, wrap='word', state='disabled')
+        self._bookTitleText = tk.Text(self._booksTab, height=10, wrap='word', state='normal')
+        self._bookTitleText.insert(tk.END, "No Data Loaded")
+        self._bookTitleText.config(state='disabled')
         self._bookTitleText.pack(padx=10, pady=10, fill='both', expand=True)
 
-        self._bookStatsText = tk.Text(self._booksTab, height=10, wrap='word', state='disabled')
+        self._bookStatsText = tk.Text(self._booksTab, height=10, wrap='word', state='normal')
+        self._bookStatsText.insert(tk.END, "No Data Loaded")
+        self._bookStatsText.config(state='disabled')
         self._bookStatsText.pack(padx=10, pady=10, fill='both', expand=True)
 
         self._booksScrollbar = tk.Scrollbar(self._booksTab, command=self._bookTitleText.yview)
@@ -104,7 +116,9 @@ class RecommenderGUI:
         self._searchButton = ttk.Button(self._searchMoviesTab, text="Search", command=self.searchShows)
         self._searchButton.grid(row=5, column=0, columnspan=2, padx=10, pady=10, sticky='w')
 
-        self._MtextResults = tk.Text(self._searchMoviesTab, height=30, wrap='none', state='disabled', width=148)
+        self._MtextResults = tk.Text(self._searchMoviesTab, height=30, wrap='none', state='normal', width=148)
+        self._MtextResults.insert(tk.END, "No Searches Performed Yet")
+        self._MtextResults.config(state='disabled')
         self._MtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10, sticky='ew')
 
         self._MresultsScrollbar = ttk.Scrollbar(self._searchMoviesTab, command=self._MtextResults.yview)
@@ -123,14 +137,14 @@ class RecommenderGUI:
         self._notebook.add(self._searchBooksTab, text="Search Books")
 
         self._titleLabel = ttk.Label(self._searchBooksTab, text="Title:")
-        self._titleLabel.grid(row=1, column=0, padx=10, pady=5)
+        self._titleLabel.grid(row=1, column=0, padx=10, pady=5, sticky='w')
         self._titleEntry = ttk.Entry(self._searchBooksTab)
-        self._titleEntry.grid(row=1, column=1, padx=10, pady=5)
+        self._titleEntry.grid(row=1, column=1, padx=10, pady=5, sticky='w')
 
         self._directorLabel = ttk.Label(self._searchBooksTab, text="Author:")
-        self._directorLabel.grid(row=2, column=0, padx=10, pady=5)
+        self._directorLabel.grid(row=2, column=0, padx=10, pady=5, sticky='w')
         self._AuthorEntry = ttk.Entry(self._searchBooksTab)
-        self._AuthorEntry.grid(row=2, column=1, padx=10, pady=5)
+        self._AuthorEntry.grid(row=2, column=1, padx=10, pady=5, sticky='w')
 
         self._actorLabel = ttk.Label(self._searchBooksTab, text="Publisher:")
         self._actorLabel.grid(row=3, column=0, padx=10, pady=5)
@@ -138,9 +152,11 @@ class RecommenderGUI:
         self._PublisherEntry.grid(row=3, column=1, padx=10, pady=5)
 
         self._searchButton = ttk.Button(self._searchBooksTab, text="Search", command=self.searchBooks)
-        self._searchButton.grid(row=5, column=0, columnspan=2, pady=10)
+        self._searchButton.grid(row=5, column=0, columnspan=2, pady=10, padx=10, sticky='w')
 
-        self._BtextResults = tk.Text(self._searchBooksTab, height=30, wrap='word', state='disabled',width=148)
+        self._BtextResults = tk.Text(self._searchBooksTab, height=30, wrap='word', state='normal',width=148)
+        self._BtextResults.insert(tk.END, "No Searches Performed Yet")
+        self._BtextResults.config(state='disabled')
         self._BtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10,sticky='ew')
 
         self._resultsScrollbar = ttk.Scrollbar(self._searchBooksTab, command=self._BtextResults.yview)
@@ -164,16 +180,18 @@ class RecommenderGUI:
         self._typeCombobox.grid(row=0, column=1, padx=0, pady=10)
         self._typeCombobox.set("Movie")  # showing movie as default
 
-        self._directorLabel = ttk.Label(self._recommendationsTab, text="Title:")
-        self._directorLabel.grid(row=2, column=0, padx=10, pady=5)
+        self._recommendLabel = ttk.Label(self._recommendationsTab, text="Title:")
+        self._recommendLabel.grid(row=2, column=0, padx=10, pady=5)
         self._RtitleEntry = ttk.Entry(self._recommendationsTab)
         self._RtitleEntry.grid(row=2, column=1, padx=10, pady=5)
 
         self._searchButton = ttk.Button(self._recommendationsTab, text="Get recommendation",
                                         command=self.getRecommendations)
-        self._searchButton.grid(row=5, column=0, columnspan=2, pady=10)
+        self._searchButton.grid(row=5, column=0, columnspan=2, pady=10, padx=10, sticky='w')
 
-        self._RtextResults = tk.Text(self._recommendationsTab, height=30, wrap='word', state='disabled',width=148)
+        self._RtextResults = tk.Text(self._recommendationsTab, height=30, wrap='word', state='normal',width=148)
+        self._RtextResults.insert(tk.END, "No Recommendations Search Performed Yet\nPlease ensure to load associations first")
+        self._RtextResults.config(state='disabled')
         self._RtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10,sticky='ew')
 
         self._resultsScrollbar = ttk.Scrollbar(self._recommendationsTab, command=self._RtextResults.yview)
@@ -209,7 +227,7 @@ class RecommenderGUI:
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
-        button = tk.Button(self._buttonFrame, text=f"Quit", command=self._rootWindow.destroy)
+        button = tk.Button(self._buttonFrame, text=f"Quit", command=self.rootWindow().destroy)
         button.pack(side='left', padx=10, expand=True)
         self._buttons.append(button)
 
@@ -219,23 +237,24 @@ class RecommenderGUI:
         self._notebook.add(self._BonusTab, text="Ratings")
         self._nestedbonusFrame = ttk.Frame(self._BonusTab, width=200, height=100, relief="solid")
         self._nestedbonusFrame.pack(side='top',pady=20, padx=20)
-        # # Bonus code
-        # bonusButton = tk.Button(self._BonusTab, text="Bonus Button", command=self.bonusButtonFunc)
-        # bonusButton.grid(row=0, column=0, padx=10, pady=10, sticky='w')
-        # bonusButton.pack(padx=10, pady=10, side='top')
+    # Bonus code
 
-        # Bonus tab ends
     def bonusButtonFunc(self):
+        '''Plots the pie chart for movie and tv show ratings when shows file is loaded'''
+        
         # Check if there is already a canvas, and remove it if it exists
         if hasattr(self, "_canvas"):
             self._canvas.get_tk_widget().pack_forget()
             self._canvas.get_tk_widget().destroy()
 
+        # Get the movies and tv shows
         moviesList = self._recommender.getMovies()
         movRatingDict = {}
         tvList = self._recommender.getTVShows()
         tvRatingDict = {}
 
+        # store the ratings of movies and tv shows in a dictionary
+        # format {rating: count}
         for movie in moviesList.values():
             if movie.getRating() not in movRatingDict:
                 movRatingDict[movie.getRating()] = 1
@@ -248,15 +267,14 @@ class RecommenderGUI:
             else:
                 tvRatingDict[tv.getRating()] += 1
 
+        # setting up the pie chart and plotting it
+        # in matplotlib Canvas and then packing it in tkinter frame
         fig, ax = plt.subplots(1, 2, figsize=(15, 5))
-
         ax[0].pie(movRatingDict.values(), labels=movRatingDict.keys(), autopct='%1.2f%%')
         ax[0].set_title("Movie Ratings")
-        # ax[0].legend(loc='upper left', fontsize='10')
 
         ax[1].pie(tvRatingDict.values(), labels=tvRatingDict.keys(), autopct='%1.2f%%')
         ax[1].set_title("TV Show Ratings")
-        # ax[1].legend(loc='upper right', fontsize=10)
         fig.tight_layout()
 
         self._canvas = FigureCanvasTkAgg(fig, master=self._nestedbonusFrame)
@@ -265,6 +283,7 @@ class RecommenderGUI:
 
             
         
+    # Bonus tab ends
         
     def loadShows(self):
         self._recommender.loadShows()
@@ -316,7 +335,7 @@ class RecommenderGUI:
         self._recommender.loadAssociations()
 
     def creditInfoBox(self):
-        messagebox.showinfo("Information", "Saurabh Raman Parkar     Yash Patel     John Shea\n"
+        messagebox.showinfo("Information", "Authors:\nSaurabh Raman Parkar\nYash Patel\nJohn Shea\n"
                                            "Project completed on May-05-2024")
 
     def searchShows(self):
@@ -333,14 +352,14 @@ class RecommenderGUI:
 
         # not sure if combobox options should be separated like this
 
-        self._MtextResults.config(state='normal')
-        self._MtextResults.delete(1.0, tk.END)
 
         maxtitlelength = len('Title') + 1
         maxdirectorlength = len('Director') + 1
         maxactorlength = len('Cast') + 1
 
-        if results:
+        if results is not None:
+            self._MtextResults.config(state='normal')
+            self._MtextResults.delete(1.0, tk.END)
             for result in results:
                 # self._textResults.insert(tk.END, f"{result}\n")
                 if len(result.getTitle()) > maxtitlelength:
@@ -362,13 +381,13 @@ class RecommenderGUI:
         publisher = self._PublisherEntry.get()
         print(title, author, publisher)
         results = self._recommender.searchBooks(title=title, author=author, publisher=publisher)
-        self._BtextResults.config(state='normal')
-        self._BtextResults.delete(1.0, tk.END)
 
         maxtitlelength = len('Title') + 1
         maxauthorlength = len('Author') + 1
 
-        if results:
+        if results is not None:
+            self._BtextResults.config(state='normal')
+            self._BtextResults.delete(1.0, tk.END)
             for result in results:
                 if len(result.getTitle()) > maxtitlelength:
                     maxtitlelength = len(result.getTitle())
@@ -384,12 +403,12 @@ class RecommenderGUI:
 
     def getRecommendations(self):
         recommendationType = self._typeCombobox.get()
-        title = self._titleEntry.get()
+        title = self._RtitleEntry.get()
         recommendations = self._recommender.getRecommendations(recommendationType, title)
-        self._RtextResults.config(state='normal')
-        self._RtextResults.delete(1.0, tk.END)
 
-        if recommendations:
+        if recommendations is not None:
+            self._RtextResults.config(state='normal')
+            self._RtextResults.delete(1.0, tk.END)
             for recommendation in recommendations:
                 self._RtextResults.insert(tk.END, f"{recommendation}\n")
 
@@ -398,6 +417,7 @@ class RecommenderGUI:
     def rootWindow(self):
         return self._rootWindow
 
+        
 
 if __name__ == "__main__":
     gui = RecommenderGUI()
