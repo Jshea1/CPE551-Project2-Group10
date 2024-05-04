@@ -398,3 +398,13 @@ class Recommender:
             messagebox.showerror('No Recommendations', 'No Recommendations Found')
             return
         return self.__recommendations
+    
+    # Functions for bonus tab
+    def getBooks(self):
+        return self.__books
+    
+    def getMovies(self):
+        return self.__movies
+    
+    def getTVShows(self):
+        return self.__TVShows
