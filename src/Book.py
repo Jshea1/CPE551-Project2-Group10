@@ -1,8 +1,16 @@
+# Authors: Saurabh Raman Parkar, Yash Patel, John Shea
+# Date: 5-4-2024
+# Description: Containing book information and attributes
+# I pledge my honor that I have abided by the Stevens Honor System
+
 from Media import Media
+
 
 class Books(Media):
     '''Sub Class for Books, stores attributes of Books'''
-    def __init__(self, id: str, title: str,author: str, rating: float, isbn: float, isbn13: float,languageCode: str, numPages: float, numOfRatings: float, pubDate: str, publisher: str):
+
+    def __init__(self, id: str, title: str, author: str, rating: float, isbn: float, isbn13: float, languageCode: str,
+                 numPages: float, numOfRatings: float, pubDate: str, publisher: str):
         '''
         Paramters
         ---------
@@ -38,7 +46,7 @@ class Books(Media):
         self.__numPages = numPages
 
         super().__init__(id, title, rating)
-        
+
     def __str__(self):
         return f'''Title: {self.getTitle()}
 Author: 

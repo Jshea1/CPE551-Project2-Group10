@@ -1,6 +1,6 @@
-# Author:
-# Date: 5-5-2024
-# Description:
+# Authors: Saurabh Raman Parkar, Yash Patel, John Shea
+# Date: 5-4-2024
+# Description: Code for the user interface
 # I pledge my honor that I have abided by the Stevens Honor System
 
 
@@ -10,6 +10,7 @@ from tkinter import messagebox
 from Recommender import Recommender
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 class RecommenderGUI:
     def __init__(self):
@@ -28,7 +29,7 @@ class RecommenderGUI:
         self._moviesTab = ttk.Frame(self._notebook)
         self._notebook.add(self._moviesTab, text="Movies")
 
-        self._movieTitleText = tk.Text(self._moviesTab, height=10, wrap='word',state='normal')
+        self._movieTitleText = tk.Text(self._moviesTab, height=10, wrap='word', state='normal')
         self._movieTitleText.insert(tk.END, "No Data Loaded")
         self._movieTitleText.config(state='disabled')
         self._movieTitleText.pack(padx=10, pady=10, fill='both', expand=True)
@@ -90,7 +91,7 @@ class RecommenderGUI:
         self._TypeLabel = ttk.Label(self._searchMoviesTab, text="Type:")
         self._TypeLabel.grid(row=0, column=0, padx=10, pady=5, sticky='w')
         self._typeCombobox = ttk.Combobox(self._searchMoviesTab, values=["Movie", "TV Show"])
-        self._typeCombobox.grid(row=0, column=1, padx=0, pady=10,sticky='w')
+        self._typeCombobox.grid(row=0, column=1, padx=0, pady=10, sticky='w')
         self._typeCombobox.set("Movie")  # showing movie as default
 
         self._titleLabel = ttk.Label(self._searchMoviesTab, text="Title:")
@@ -124,7 +125,7 @@ class RecommenderGUI:
         self._MresultsScrollbar = ttk.Scrollbar(self._searchMoviesTab, command=self._MtextResults.yview)
         self._MresultsScrollbar.grid(row=6, column=149, sticky='ns')
         self._MtextResults.config(yscrollcommand=self._MresultsScrollbar.set)
-        
+
         self._vscroll = ttk.Scrollbar(self._searchMoviesTab, orient='horizontal', command=self._MtextResults.xview)
         self._vscroll.grid(row=7, column=0, columnspan=150, sticky='ew')
         self._MtextResults.config(xscrollcommand=self._vscroll.set)
@@ -154,18 +155,18 @@ class RecommenderGUI:
         self._searchButton = ttk.Button(self._searchBooksTab, text="Search", command=self.searchBooks)
         self._searchButton.grid(row=5, column=0, columnspan=2, pady=10, padx=10, sticky='w')
 
-        self._BtextResults = tk.Text(self._searchBooksTab, height=30, wrap='word', state='normal',width=148)
+        self._BtextResults = tk.Text(self._searchBooksTab, height=30, wrap='word', state='normal', width=148)
         self._BtextResults.insert(tk.END, "No Searches Performed Yet")
         self._BtextResults.config(state='disabled')
-        self._BtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10,sticky='ew')
+        self._BtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10, sticky='ew')
 
         self._resultsScrollbar = ttk.Scrollbar(self._searchBooksTab, command=self._BtextResults.yview)
         self._resultsScrollbar.grid(row=6, column=149, sticky='ns')
         self._BtextResults.config(yscrollcommand=self._resultsScrollbar.set)
-        
+
         self._vscroll = ttk.Scrollbar(self._searchBooksTab, orient='horizontal', command=self._BtextResults.xview)
         self._vscroll.grid(row=7, column=0, columnspan=150, sticky='ew')
-        self._BtextResults.config(xscrollcommand=self._vscroll.set)        
+        self._BtextResults.config(xscrollcommand=self._vscroll.set)
 
         # Search books tab ends
 
@@ -189,15 +190,16 @@ class RecommenderGUI:
                                         command=self.getRecommendations)
         self._searchButton.grid(row=5, column=0, columnspan=2, pady=10, padx=10, sticky='w')
 
-        self._RtextResults = tk.Text(self._recommendationsTab, height=30, wrap='word', state='normal',width=148)
-        self._RtextResults.insert(tk.END, "No Recommendations Search Performed Yet\nPlease ensure to load associations first")
+        self._RtextResults = tk.Text(self._recommendationsTab, height=30, wrap='word', state='normal', width=148)
+        self._RtextResults.insert(tk.END,
+                                  "No Recommendations Search Performed Yet\nPlease ensure to load associations first")
         self._RtextResults.config(state='disabled')
-        self._RtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10,sticky='ew')
+        self._RtextResults.grid(row=6, column=0, columnspan=150, padx=5, pady=10, sticky='ew')
 
         self._resultsScrollbar = ttk.Scrollbar(self._recommendationsTab, command=self._RtextResults.yview)
         self._resultsScrollbar.grid(row=6, column=150, sticky='ns')
         self._RtextResults.config(yscrollcommand=self._resultsScrollbar.set)
-        
+
         self._vscroll = ttk.Scrollbar(self._recommendationsTab, orient='horizontal', command=self._RtextResults.xview)
         self._vscroll.grid(row=7, column=0, columnspan=150, sticky='ew')
         self._RtextResults.config(xscrollcommand=self._vscroll.set)
@@ -236,12 +238,13 @@ class RecommenderGUI:
         self._BonusTab = ttk.Frame(self._notebook)
         self._notebook.add(self._BonusTab, text="Ratings")
         self._nestedbonusFrame = ttk.Frame(self._BonusTab, width=200, height=100, relief="solid")
-        self._nestedbonusFrame.pack(side='top',pady=20, padx=20)
+        self._nestedbonusFrame.pack(side='top', pady=20, padx=20)
+
     # Bonus code
 
     def bonusButtonFunc(self):
         '''Plots the pie chart for movie and tv show ratings when shows file is loaded'''
-        
+
         # Check if there is already a canvas, and remove it if it exists
         if hasattr(self, "_canvas"):
             self._canvas.get_tk_widget().pack_forget()
@@ -281,10 +284,8 @@ class RecommenderGUI:
         self._canvas.draw()
         self._canvas.get_tk_widget().pack(padx=10, pady=10, expand=True, fill='both', side='top')
 
-            
-        
     # Bonus tab ends
-        
+
     def loadShows(self):
         self._recommender.loadShows()
 
@@ -336,7 +337,7 @@ class RecommenderGUI:
 
     def creditInfoBox(self):
         messagebox.showinfo("Information", "Authors:\nSaurabh Raman Parkar\nYash Patel\nJohn Shea\n"
-                                           "Project completed on May-05-2024")
+                                           "Project completed on May-04-2024")
 
     def searchShows(self):
         choiceType = self._typeCombobox.get()
@@ -351,7 +352,6 @@ class RecommenderGUI:
             results = self._recommender.searchTVMovies(title=title, director=director, cast=actor, genre=genre)
 
         # not sure if combobox options should be separated like this
-
 
         maxtitlelength = len('Title') + 1
         maxdirectorlength = len('Director') + 1
@@ -417,7 +417,6 @@ class RecommenderGUI:
     def rootWindow(self):
         return self._rootWindow
 
-        
 
 if __name__ == "__main__":
     gui = RecommenderGUI()

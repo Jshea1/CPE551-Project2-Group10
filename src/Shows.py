@@ -1,10 +1,16 @@
-# Author: Yash Patel
+# Authors: Saurabh Raman Parkar, Yash Patel, John Shea
+# Date: 5-4-2024
+# Description: Containing show information and attributes
+# I pledge my honor that I have abided by the Stevens Honor System
 
 from Media import Media
 
+
 class Show(Media):
     '''Sub Class for Shows, stores attributes of Movies and TV Shows'''
-    def __init__(self, id, showType, title,directors,cast, averageRating, countryCode, dateAdded, releaseYear, rating, duration, genres, description):
+
+    def __init__(self, id, showType, title, directors, cast, averageRating, countryCode, dateAdded, releaseYear, rating,
+                 duration, genres, description):
         '''
         Paramters
         ---------
@@ -34,7 +40,7 @@ class Show(Media):
             genres of show
         description: str
             description of show'''
-            
+
         super().__init__(id, title, averageRating)
         self.__showType = showType
         self.__directors = directors
@@ -46,7 +52,7 @@ class Show(Media):
         self.__duration = duration
         self.__genres = genres
         self.__description = description
-    
+
     def __str__(self):
         return f'''Title: {self.getTitle()}
 Show Type: {self.getShowType()}
